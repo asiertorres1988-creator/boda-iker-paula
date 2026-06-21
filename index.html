@@ -330,12 +330,32 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Lato',sans-serif;b
       <rect x="12" y="68" width="396" height="220" rx="8" fill="url(#bG)" stroke="#c5b090" stroke-width="1.5"/>
       <line x1="12" y1="278" x2="210" y2="168" stroke="#cfc0a5" stroke-width="1"/>
       <line x1="408" y1="278" x2="210" y2="168" stroke="#cfc0a5" stroke-width="1"/>
-      <circle cx="210" cy="178" r="35" fill="#7a3010" opacity=".5"/>
-      <circle cx="210" cy="178" r="30" fill="url(#sG)" stroke="#a04820" stroke-width="1.5"/>
-      <circle cx="210" cy="178" r="24" fill="none" stroke="rgba(245,220,200,.35)" stroke-width="1.2"/>
-      <circle cx="210" cy="178" r="18" fill="none" stroke="rgba(245,220,200,.18)" stroke-width=".8"/>
-      <text x="210" y="175" text-anchor="middle" font-family="Cinzel,serif" font-size="12" fill="#f5f0e8" font-weight="600" letter-spacing="2">I &amp; P</text>
-      <text x="210" y="189" text-anchor="middle" font-family="Cinzel,serif" font-size="7" fill="rgba(245,240,232,.65)" letter-spacing="1">2026</text>
+      <!-- Sello lacrado realista con forma estrellada -->
+      <g id="seal-group">
+        <!-- Sombra -->
+        <ellipse cx="213" cy="183" rx="32" ry="28" fill="rgba(0,0,0,.35)"/>
+        <!-- Forma estrellada exterior (12 puntas redondeadas) -->
+        <path d="M210,145 L215,158 L228,152 L222,164 L236,165 L225,174 L234,185 L221,183 L220,197 L210,188 L200,197 L199,183 L186,185 L195,174 L184,165 L198,164 L192,152 L205,158 Z" fill="#8a2e10"/>
+        <!-- Cuerpo principal del sello -->
+        <path d="M210,148 L214,159 L226,154 L221,165 L233,166 L223,174 L231,184 L220,182 L219,195 L210,187 L201,195 L200,182 L189,184 L197,174 L187,166 L199,165 L194,154 L206,159 Z" fill="url(#sG)"/>
+        <!-- Borde interior decorativo -->
+        <circle cx="210" cy="172" r="19" fill="none" stroke="rgba(245,220,200,.4)" stroke-width="1" stroke-dasharray="2,2"/>
+        <!-- Círculo central -->
+        <circle cx="210" cy="172" r="15" fill="rgba(0,0,0,.12)"/>
+        <!-- Texto -->
+        <text x="210" y="169" text-anchor="middle" font-family="Cinzel,serif" font-size="11" fill="#f5f0e8" font-weight="600" letter-spacing="2">I &amp; P</text>
+        <text x="210" y="181" text-anchor="middle" font-family="Cinzel,serif" font-size="6.5" fill="rgba(245,240,232,.7)" letter-spacing="1.5">2026</text>
+        <!-- Pequeñas perlas decorativas en las puntas -->
+        <circle cx="210" cy="148" r="2" fill="rgba(245,220,200,.6)"/>
+        <circle cx="226" cy="154" r="1.5" fill="rgba(245,220,200,.5)"/>
+        <circle cx="233" cy="166" r="1.5" fill="rgba(245,220,200,.5)"/>
+        <circle cx="231" cy="184" r="1.5" fill="rgba(245,220,200,.5)"/>
+        <circle cx="219" cy="195" r="2" fill="rgba(245,220,200,.6)"/>
+        <circle cx="201" cy="195" r="2" fill="rgba(245,220,200,.6)"/>
+        <circle cx="189" cy="184" r="1.5" fill="rgba(245,220,200,.5)"/>
+        <circle cx="187" cy="166" r="1.5" fill="rgba(245,220,200,.5)"/>
+        <circle cx="194" cy="154" r="1.5" fill="rgba(245,220,200,.5)"/>
+      </g>
       <g opacity=".6">
         <ellipse cx="368" cy="84" rx="15" ry="6" fill="#d4a06a" transform="rotate(-25 368 84)"/>
         <ellipse cx="368" cy="84" rx="15" ry="6" fill="#e8b880" transform="rotate(25 368 84)"/>
@@ -369,6 +389,13 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Lato',sans-serif;b
 
   <!-- P1 -->
   <div class="pg cur" id="p1">
+      <!-- Notas musicales P1 -->
+      <span class="nota n1" style="color:rgba(181,84,30,.55);text-shadow:0 0 15px rgba(181,84,30,.4)">♪</span>
+      <span class="nota n2" style="color:rgba(181,84,30,.45);text-shadow:0 0 15px rgba(181,84,30,.3)">♫</span>
+      <span class="nota n3" style="color:rgba(181,84,30,.5);text-shadow:0 0 15px rgba(181,84,30,.35)">♩</span>
+      <span class="nota n4" style="color:rgba(181,84,30,.4);text-shadow:0 0 12px rgba(181,84,30,.3)">♬</span>
+      <span class="nota n5" style="color:rgba(181,84,30,.45);text-shadow:0 0 12px rgba(181,84,30,.3)">♪</span>
+      <span class="nota n6" style="color:rgba(181,84,30,.4);text-shadow:0 0 10px rgba(181,84,30,.25)">♫</span>
     <div class="ca">
       <div class="ca-inner"></div>
       <!-- Pétalos CSS flotando dentro de la tarjeta -->
@@ -435,6 +462,12 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Lato',sans-serif;b
 
   <!-- P2 -->
   <div class="pg" id="p2">
+      <!-- Notas musicales P2 -->
+      <span class="nota n1" style="color:rgba(181,84,30,.5);text-shadow:0 0 15px rgba(181,84,30,.35)">♩</span>
+      <span class="nota n2" style="color:rgba(181,84,30,.45);text-shadow:0 0 12px rgba(181,84,30,.3)">♬</span>
+      <span class="nota n3" style="color:rgba(181,84,30,.55);text-shadow:0 0 15px rgba(181,84,30,.4)">♪</span>
+      <span class="nota n4" style="color:rgba(181,84,30,.4);text-shadow:0 0 10px rgba(181,84,30,.25)">♫</span>
+      <span class="nota n5" style="color:rgba(181,84,30,.45);text-shadow:0 0 12px rgba(181,84,30,.3)">♩</span>
     <div class="ca">
       <div class="ca-inner"></div>
       <div class="petalo p1"></div><div class="petalo p2"></div><div class="petalo p3"></div>
@@ -508,6 +541,12 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Lato',sans-serif;b
 
   <!-- P4 -->
   <div class="pg" id="p4">
+      <!-- Notas musicales P4 -->
+      <span class="nota n1" style="color:rgba(201,168,76,.55);text-shadow:0 0 15px rgba(201,168,76,.4)">♪</span>
+      <span class="nota n2" style="color:rgba(201,168,76,.45);text-shadow:0 0 12px rgba(201,168,76,.3)">♫</span>
+      <span class="nota n3" style="color:rgba(201,168,76,.5);text-shadow:0 0 15px rgba(201,168,76,.35)">♩</span>
+      <span class="nota n4" style="color:rgba(201,168,76,.4);text-shadow:0 0 10px rgba(201,168,76,.25)">♬</span>
+      <span class="nota n5" style="color:rgba(201,168,76,.45);text-shadow:0 0 12px rgba(201,168,76,.3)">♪</span>
     <div class="ca">
       <div class="ca-inner"></div>
       <div class="petalo p1"></div><div class="petalo p2"></div><div class="petalo p3"></div>
