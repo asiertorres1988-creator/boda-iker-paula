@@ -441,6 +441,10 @@ var tx0 = 0;
 function abrirSobre() {
   if (opened) return;
   opened = true;
+  // Arrancar musica en el mismo click - el navegador lo permite
+  var au = document.getElementById('au');
+  au.volume = 0.35;
+  au.play().then(function() { playing = true; syncIcon(); }).catch(function() {});
   // Animar solapa
   document.getElementById('flap').style.transform = 'rotateX(-175deg)';
   // Tarjetita asoma
@@ -450,7 +454,7 @@ function abrirSobre() {
     cp.style.opacity = '1';
     cp.style.transform = 'translateX(-50%) translateY(-100px)';
   }, 300);
-  // Mostrar invitación
+  // Mostrar invitacion
   setTimeout(function() {
     document.getElementById('scene').classList.add('gone');
     document.getElementById('book').classList.add('show');
@@ -459,7 +463,6 @@ function abrirSobre() {
     document.getElementById('mbtn').classList.add('show');
     document.getElementById('pt').classList.add('show');
     iniciarPetalos();
-    try { document.getElementById('au').volume = 0.3; document.getElementById('au').play(); playing = true; syncIcon(); } catch(e) {}
   }, 1800);
 }
 
