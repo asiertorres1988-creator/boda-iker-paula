@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Iker & Paula · 26.09.2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cr:#f5f0e8;--te:#b5541e;--tl:#d4733a;
+  --br:#3d2b1f;--mi:#6b4c38;--go:#c9a84c;
+}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Lato',sans-serif;background:#0d0503}
+
+/* SOBRE */
+#scene{
+  position:fixed;inset:0;z-index:100;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  background:radial-gradient(ellipse at 30% 40%,#2a1508,#0d0503);
+}
+#scene.gone{display:none}
+.sl{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(245,240,232,.5);
+  font-size:.95rem;letter-spacing:.3em}
+.oh{font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(245,240,232,.35)}
+
+#ew{position:relative;width:clamp(240px,38vw,380px);cursor:pointer;
+  filter:drop-shadow(0 18px 50px rgba(181,84,30,.3))}
+#ew svg{width:100%}
+
+/* Solapa */
+#flap{
+  transform-origin:50% 0%;transform-box:fill-box;
+  transition:transform .7s cubic-bezier(.4,0,.2,1);
+}
+#ew.open #flap{transform:rotateX(-175deg)}
+
+/* Tarjetita que asoma */
+#cp{
+  position:absolute;bottom:24%;left:50%;
+  transform:translateX(-50%) translateY(0);
+  width:62%;background:var(--cr);border-radius:3px 3px 0 0;
+  padding:10px 8px 5px;text-align:center;opacity:0;pointer-events:none;z-index:2;
+  box-shadow:0 -5px 24px rgba(0,0,0,.25);
+  transition:opacity .5s .5s,transform .75s .45s cubic-bezier(.2,.85,.4,1);
+}
+#ew.open #cp{opacity:1;transform:translateX(-50%) translateY(-100px)}
+#cp b{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.9rem,2.5vw,1.1rem);color:var(--br);display:block}
+#cp s{font-family:'Lato',sans-serif;font-weight:300;font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--te);display:block;margin-bottom:3px}
+#cp d{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.12em;color:var(--mi);display:block;margin-top:3px}
+
+/* BOOK */
+#book{position:fixed;inset:0;z-index:10;display:none}
+#book.show{display:block}
+
+/* PÁGINAS */
+.pg{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;
+  opacity:0;visibility:hidden;
+  transition:opacity .5s,transform .5s;
+  transform:translateX(100%);
+}
+.pg.cur{opacity:1;visibility:visible;transform:translateX(0)}
+.pg.prev{opacity:0;visibility:hidden;transform:translateX(-60%)}
+
+/* TARJETA */
+.ca{
+  position:relative;background:var(--cr);
+  width:min(460px,100%);max-height:calc(100svh - 60px);
+  border-radius:10px;overflow:hidden;
+  box-shadow:0 20px 70px rgba(0,0,0,.6);
+  display:flex;flex-direction:column;align-items:center;
+  padding:28px 22px 24px;
+}
+.ca::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+}
+.rz{position:relative;z-index:2}
+
+/* Flores esquinas */
+.fc{position:absolute;pointer-events:none;z-index:1}
+.fc.tr{top:0;right:0}
+.fc.bl{bottom:0;left:0;transform:rotate(180deg)}
+
+/* TIPOGRAFÍA COMPARTIDA */
+.ey{font-family:'Lato',sans-serif;font-weight:300;font-size:.58rem;letter-spacing:.42em;
+  text-transform:uppercase;color:var(--te);margin-bottom:10px}
+.dv{width:1px;height:30px;background:linear-gradient(to bottom,transparent,var(--te),transparent);margin:8px auto 10px}
+.ptit{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.9rem,6vw,2.8rem);color:var(--br);text-align:center;line-height:1.05;margin-bottom:5px}
+.psub{font-family:'Lato',sans-serif;font-weight:300;font-size:.56rem;letter-spacing:.36em;
+  text-transform:uppercase;color:var(--mi);margin-bottom:14px;text-align:center}
+
+/* P1 PORTADA */
+#p1{background:radial-gradient(ellipse at 25% 20%,#2a1508,#0d0503)}
+.nm1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(3rem,10vw,5.2rem);color:var(--br);display:block;text-align:center;line-height:1}
+.nma{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.3rem,3.5vw,2rem);color:var(--te);display:block;text-align:center;margin:1px 0}
+.nm2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(3rem,10vw,5.2rem);display:block;text-align:center;line-height:1;
+  background:linear-gradient(90deg,var(--te),var(--tl) 45%,#e8904a 55%,var(--te));
+  background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:sh 4s linear 1s infinite}
+@keyframes sh{0%{background-position:200%}100%{background-position:-200%}}
+.fd{font-family:'Lato',sans-serif;font-weight:300;font-size:.58rem;letter-spacing:.38em;text-transform:uppercase;color:var(--mi)}
+.fn{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,8vw,4rem);color:var(--te);line-height:1;margin:2px 0}
+.fm{font-family:'Cinzel',serif;font-size:clamp(.8rem,2vw,1.05rem);letter-spacing:.22em;color:var(--br)}
+.fa{font-family:'Lato',sans-serif;font-weight:300;letter-spacing:.28em;color:var(--mi);font-size:.74rem;margin-top:2px}
+.lu{text-align:center;margin-top:12px}
+.lu p{font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--mi)}
+.lu strong{font-weight:600;color:var(--br)}
+
+/* P2 PROGRAMA */
+#p2{background:radial-gradient(ellipse at 70% 80%,#2a1508,#0d0503)}
+.pb{background:rgba(181,84,30,.08);border:1px solid rgba(181,84,30,.2);
+  border-left:3px solid var(--te);border-radius:0 6px 6px 0;
+  padding:11px 13px;width:100%;margin-bottom:12px;text-align:left}
+.pb .pbl{font-family:'Lato',sans-serif;font-size:.54rem;letter-spacing:.3em;text-transform:uppercase;color:var(--te)}
+.pb .pbt{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--br);margin:2px 0}
+.pb .pbd{font-family:'Cinzel',serif;font-weight:600;font-size:.78rem;color:var(--te)}
+.pb .pbb{font-size:.75rem;color:var(--mi);line-height:1.55;margin-top:5px}
+.sd{font-family:'Cinzel',serif;font-weight:600;font-size:.68rem;letter-spacing:.2em;
+  color:var(--te);margin-bottom:10px;text-align:center}
+.pr{display:flex;gap:8px;width:100%}
+.pi{flex:1;background:rgba(181,84,30,.07);border:1px solid rgba(181,84,30,.18);
+  border-radius:6px;padding:10px 7px;text-align:center}
+.pi .ii{font-size:1.05rem;display:block;margin-bottom:3px}
+.pi .il{font-family:'Lato',sans-serif;font-size:.52rem;letter-spacing:.26em;text-transform:uppercase;color:var(--te)}
+.pi .in{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.9rem;color:var(--br);margin:2px 0}
+.pi .id{font-family:'Lato',sans-serif;font-weight:300;font-size:.64rem;color:var(--mi)}
+.pi .it{font-family:'Cinzel',serif;font-weight:600;font-size:.74rem;color:var(--te);margin-top:2px}
+
+/* P3 HISTORIA */
+#p3{background:radial-gradient(ellipse at 20% 60%,#1a0c08,#0d0503)}
+.hca{background:linear-gradient(160deg,#2e1a10,#1a0f0a);border:1px solid rgba(201,168,76,.12)}
+.hti{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.9rem,6.5vw,3rem);color:var(--cr);text-align:center;line-height:1.05;margin-bottom:5px}
+.hti span{color:var(--go)}
+.hsu{font-family:'Lato',sans-serif;font-weight:300;font-size:.54rem;letter-spacing:.36em;
+  text-transform:uppercase;color:rgba(245,240,232,.38);margin-bottom:12px;text-align:center}
+.hbo{font-family:'Cormorant Garamond',serif;font-size:clamp(.85rem,2vw,.97rem);
+  line-height:1.72;color:rgba(245,240,232,.82);text-align:center;
+  overflow-y:auto;max-height:calc(100svh - 310px);padding-right:2px}
+.hbo p{margin-bottom:11px}
+.hbo em{color:var(--go);font-style:italic}
+.qm{font-size:2.8rem;color:rgba(201,168,76,.14);line-height:.5;display:block;margin-bottom:3px}
+.hen{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(.88rem,2.2vw,1.05rem);color:var(--go);margin-top:10px;text-align:center}
+
+/* P4 CONFIRMACIÓN */
+#p4{background:radial-gradient(ellipse at 50% 50%,#2a1508,#0d0503)}
+.cb{font-family:'Cormorant Garamond',serif;font-size:.93rem;color:var(--mi);
+  text-align:center;line-height:1.7;margin-bottom:14px}
+.ph{display:flex;flex-direction:column;gap:7px;width:100%;align-items:center}
+.ph a{font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:.05em;
+  color:var(--br);background:rgba(181,84,30,.1);border:1px solid rgba(181,84,30,.25);
+  border-radius:30px;padding:8px 22px;text-decoration:none;width:100%;max-width:230px;text-align:center}
+.gf{display:block;font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.06em;color:#f5f0e8;background:var(--te);border-radius:30px;padding:11px 22px;text-decoration:none;text-align:center;width:100%;max-width:260px;margin:14px auto 0;box-shadow:0 4px 18px rgba(181,84,30,.4)}
+.cor{font-family:'Lato',sans-serif;font-weight:300;font-size:.58rem;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--mi)}
+.mo{font-family:'Cinzel',serif;font-size:clamp(2rem,7vw,3rem);
+  color:var(--go);letter-spacing:.2em;margin-top:18px;text-align:center;
+  animation:glo 3s ease-in-out infinite}
+@keyframes glo{0%,100%{text-shadow:0 0 15px rgba(201,168,76,.15)}50%{text-shadow:0 0 35px rgba(201,168,76,.45)}}
+.cd{font-family:'Lato',sans-serif;font-weight:300;letter-spacing:.32em;
+  color:rgba(245,240,232,.3);font-size:.68rem;margin-top:4px;text-align:center}
+.gr{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;
+  color:rgba(245,240,232,.4);margin-top:6px;text-align:center}
+
+/* NAVEGACIÓN */
+#dots{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
+  z-index:999;display:none;gap:8px;align-items:center}
+#dots.show{display:flex}
+.do{width:7px;height:7px;border-radius:50%;background:rgba(245,240,232,.25);
+  border:1px solid rgba(245,240,232,.45);cursor:pointer;transition:all .3s}
+.do.on{background:var(--te);border-color:var(--te);transform:scale(1.35)}
+
+#nb{position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:999;
+  display:none;width:36px;height:36px;border-radius:50%;border:none;
+  background:rgba(181,84,30,.65);cursor:pointer;align-items:center;justify-content:center}
+#nb.show{display:flex}
+#nb svg{fill:#fff;width:17px;height:17px}
+
+#mbtn{position:fixed;bottom:14px;right:14px;z-index:999;
+  width:44px;height:44px;border-radius:50%;border:none;
+  background:var(--te);cursor:pointer;display:none;
+  align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(0,0,0,.45)}
+#mbtn.show{display:flex}
+#mbtn svg{fill:#fff;width:21px;height:21px}
+
+/* PÉTALOS */
+#pt{position:fixed;inset:0;pointer-events:none;z-index:5;display:none}
+#pt.show{display:block}
+</style>
+</head>
+<body>
+
+<audio id="au" loop preload="auto">
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<!-- BOTÓN MÚSICA -->
+<button id="mbtn" onclick="toggleMusic()">
+  <svg id="io" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+  <svg id="im" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+</button>
+
+<!-- PUNTOS NAV -->
+<div id="dots">
+  <div class="do on" onclick="ir(0)"></div>
+  <div class="do" onclick="ir(1)"></div>
+  <div class="do" onclick="ir(2)"></div>
+  <div class="do" onclick="ir(3)"></div>
+</div>
+
+<!-- BOTÓN SIGUIENTE -->
+<button id="nb" onclick="sig()">
+  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+</button>
+
+<!-- PÉTALOS -->
+<canvas id="pt"></canvas>
+
+<!-- ===== SOBRE ===== -->
+<div id="scene">
+  <p class="sl">Una invitación especial te espera</p>
+
+  <div id="ew" onclick="abrirSobre()">
+    <svg viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f0e6d3"/>
+          <stop offset="100%" stop-color="#e8d9c2"/>
+        </linearGradient>
+        <linearGradient id="fg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ede0cc"/>
+          <stop offset="100%" stop-color="#ddd0bc"/>
+        </linearGradient>
+      </defs>
+      <!-- Cuerpo -->
+      <rect x="12" y="68" width="396" height="220" rx="7" fill="url(#bg)" stroke="#c5b090" stroke-width="1.5"/>
+      <line x1="12" y1="278" x2="210" y2="168" stroke="#cfc0a5" stroke-width="1"/>
+      <line x1="408" y1="278" x2="210" y2="168" stroke="#cfc0a5" stroke-width="1"/>
+      <!-- Sello -->
+      <circle cx="210" cy="178" r="32" fill="#9a4218"/>
+      <circle cx="210" cy="178" r="27" fill="#b5541e" stroke="#8a3a15" stroke-width="1.2"/>
+      <circle cx="210" cy="178" r="21" fill="none" stroke="rgba(245,220,200,.3)" stroke-width="1"/>
+      <text x="210" y="175" text-anchor="middle" font-family="Cinzel,serif" font-size="11" fill="#f5f0e8" font-weight="600" letter-spacing="2">I &amp; P</text>
+      <text x="210" y="188" text-anchor="middle" font-family="Cinzel,serif" font-size="7" fill="rgba(245,240,232,.6)" letter-spacing="1">2026</text>
+      <!-- Flor esquina -->
+      <g opacity=".5">
+        <ellipse cx="370" cy="85" rx="15" ry="6" fill="#d4a06a" transform="rotate(-25 370 85)"/>
+        <ellipse cx="370" cy="85" rx="15" ry="6" fill="#e8b880" transform="rotate(25 370 85)"/>
+        <circle cx="370" cy="85" r="5" fill="#b8784a"/>
+        <ellipse cx="353" cy="78" rx="10" ry="4" fill="#d4a06a" transform="rotate(15 353 78)"/>
+        <circle cx="353" cy="78" r="3.5" fill="#b8784a"/>
+        <path d="M338 96 Q355 86 372 90" stroke="#8b6040" stroke-width="1.2" fill="none"/>
+        <ellipse cx="356" cy="90" rx="7" ry="2.8" fill="#7a9060" transform="rotate(-15 356 90)"/>
+      </g>
+      <!-- Solapa -->
+      <g id="flap" style="transform-box:fill-box;transform-origin:50% 0%;transition:transform .75s cubic-bezier(.4,0,.2,1)">
+        <polygon points="12,68 408,68 210,175" fill="url(#fg)" stroke="#c5b090" stroke-width="1.5" stroke-linejoin="round"/>
+        <g opacity=".22">
+          <circle cx="210" cy="110" r="3" fill="#b5541e"/>
+          <circle cx="200" cy="120" r="2" fill="#b5541e"/>
+          <circle cx="220" cy="120" r="2" fill="#b5541e"/>
+        </g>
+      </g>
+    </svg>
+
+    <!-- Tarjeta que asoma -->
+    <div id="cp">
+      <s>Gran Concierto de Amor</s>
+      <b>Iker &amp; Paula</b>
+      <d>26 · 09 · 2026</d>
+    </div>
+  </div>
+
+  <p class="oh">Toca para abrir</p>
+</div>
+
+<!-- ===== BOOK ===== -->
+<div id="book">
+
+  <!-- P1: PORTADA -->
+  <div class="pg cur" id="p1">
+    <div class="ca">
+      <!-- Floral TR -->
+      <svg class="fc tr" width="120" height="120" viewBox="0 0 200 200">
+        <g opacity=".78">
+          <ellipse cx="145" cy="48" rx="29" ry="11" fill="#e8a87c" transform="rotate(-35 145 48)"/>
+          <ellipse cx="145" cy="48" rx="29" ry="11" fill="#dba068" transform="rotate(25 145 48)"/>
+          <ellipse cx="145" cy="48" rx="29" ry="11" fill="#f0c090" transform="rotate(-5 145 48)"/>
+          <ellipse cx="145" cy="48" rx="29" ry="11" fill="#e8a87c" transform="rotate(55 145 48)"/>
+          <circle cx="145" cy="48" r="10" fill="#c07040"/>
+          <ellipse cx="88" cy="28" rx="18" ry="7" fill="#f0b890" transform="rotate(15 88 28)"/>
+          <ellipse cx="88" cy="28" rx="18" ry="7" fill="#e8a880" transform="rotate(-45 88 28)"/>
+          <circle cx="88" cy="28" r="6.5" fill="#c07840"/>
+          <path d="M55 85 Q88 62 125 68 Q158 76 178 48" stroke="#8b6040" stroke-width="2" fill="none"/>
+          <ellipse cx="108" cy="70" rx="12" ry="4.5" fill="#7a9060" transform="rotate(-18 108 70)"/>
+          <ellipse cx="140" cy="62" rx="10" ry="4" fill="#6a8050" transform="rotate(28 140 62)"/>
+          <ellipse cx="168" cy="32" rx="7" ry="13" fill="#e8c090" transform="rotate(20 168 32)"/>
+        </g>
+      </svg>
+      <!-- Floral BL -->
+      <svg class="fc bl" width="100" height="100" viewBox="0 0 200 200">
+        <g opacity=".6">
+          <ellipse cx="145" cy="48" rx="24" ry="9" fill="#d4a06a" transform="rotate(-35 145 48)"/>
+          <ellipse cx="145" cy="48" rx="24" ry="9" fill="#c89058" transform="rotate(25 145 48)"/>
+          <circle cx="145" cy="48" r="8" fill="#b87840"/>
+          <ellipse cx="88" cy="28" rx="15" ry="6" fill="#e8b088" transform="rotate(15 88 28)"/>
+          <circle cx="88" cy="28" r="5" fill="#b87038"/>
+          <path d="M55 85 Q88 62 125 68 Q158 76 178 48" stroke="#8b6040" stroke-width="1.6" fill="none"/>
+          <ellipse cx="108" cy="70" rx="10" ry="4" fill="#6a8050" transform="rotate(-18 108 70)"/>
+        </g>
+      </svg>
+
+      <p class="ey rz">Gran Concierto de Amor</p>
+      <div class="rz" style="text-align:center;margin-bottom:4px">
+        <span class="nm1">Iker</span>
+        <span class="nma">&amp;</span>
+        <span class="nm2">Paula</span>
+      </div>
+      <div class="dv rz"></div>
+      <div class="rz" style="text-align:center">
+        <p class="fd">Sábado</p>
+        <p class="fn">26</p>
+        <p class="fm">Septiembre</p>
+        <p class="fa">2026</p>
+      </div>
+      <div class="lu rz">
+        <p><strong>Iglesia Santa María Magdalena</strong></p>
+        <p>Mondéjar, Guadalajara</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- P2: PROGRAMA -->
+  <div class="pg" id="p2">
+    <div class="ca">
+      <svg class="fc tr" width="110" height="110" viewBox="0 0 200 200">
+        <g opacity=".7">
+          <ellipse cx="145" cy="48" rx="27" ry="10" fill="#e8a87c" transform="rotate(-35 145 48)"/>
+          <ellipse cx="145" cy="48" rx="27" ry="10" fill="#dba068" transform="rotate(25 145 48)"/>
+          <circle cx="145" cy="48" r="9" fill="#c07040"/>
+          <ellipse cx="88" cy="28" rx="16" ry="6.5" fill="#f0b890" transform="rotate(15 88 28)"/>
+          <circle cx="88" cy="28" r="6" fill="#c07840"/>
+          <path d="M55 85 Q88 62 125 68 Q158 76 178 48" stroke="#8b6040" stroke-width="1.8" fill="none"/>
+          <ellipse cx="108" cy="70" rx="10" ry="4" fill="#7a9060" transform="rotate(-18 108 70)"/>
+        </g>
+      </svg>
+
+      <p class="ptit rz"><span style="color:var(--te)">P</span>rograma de <span style="color:var(--te)">B</span>oda</p>
+      <p class="psub rz">El gran día</p>
+
+      <div class="pb rz">
+        <p class="pbl">🥂 Ensayo General</p>
+        <p class="pbt">Despedida conjunta</p>
+        <p class="pbd">29 de Agosto</p>
+        <p class="pbb">Antes del gran concierto, os invitamos a calentar voces, brindar por lo que viene y disfrutar de una noche sin partituras: solo improvisación, alegría y mucho ritmo.</p>
+      </div>
+
+      <p class="sd rz">— 26 de Septiembre —</p>
+
+      <div class="pr rz">
+        <div class="pi">
+          <span class="ii">🏛️</span>
+          <span class="il">1ª Parte</span>
+          <p class="in">Ceremonia</p>
+          <p class="id">Mondéjar</p>
+          <p class="it">12:00 H</p>
+        </div>
+        <div class="pi">
+          <span class="ii">🍽️</span>
+          <span class="il">2ª Parte</span>
+          <p class="in">Banquete</p>
+          <p class="id">Green Guadalajara</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P3: HISTORIA -->
+  <div class="pg" id="p3">
+    <div class="ca hca">
+      <p class="hti rz"><span>N</span>uestra <span>H</span>istoria</p>
+      <p class="hsu rz">Una melodía escrita a dos voces</p>
+      <div class="hbo rz">
+        <span class="qm">"</span>
+        <p>Como en toda gran sinfonía, nuestra melodía empezó con una <em>nota discordante</em>. Nos conocíamos desde hacía tiempo, pero a ella no le caía demasiado bien aquel chico que más tarde se convertiría en su media nota.</p>
+        <p>Un frío diciembre llegaron los primeros acordes. A principios de enero, comenzó <em>la conversación que cambió todo</em>… y solo unos días después, nació nuestra historia.</p>
+        <p>Desde entonces, no ha habido silencio entre nosotros. Juntos aprendimos que <em>lo nuestro era una partitura escrita con tinta permanente</em>.</p>
+        <p>Hoy, después de muchos ensayos, risas y batallas compartidas, y de haber formado nuestro pequeño hogar con nuestro pequeño <em>Bross</em>, somos los intérpretes más felices de nuestra propia canción.</p>
+      </div>
+      <p class="hen rz">Y esta… solo es la introducción de la obra más importante de nuestras vidas.</p>
+    </div>
+  </div>
+
+  <!-- P4: CONFIRMACIÓN -->
+  <div class="pg" id="p4">
+    <div class="ca">
+      <svg class="fc tr" width="110" height="110" viewBox="0 0 200 200">
+        <g opacity=".7">
+          <ellipse cx="145" cy="48" rx="27" ry="10" fill="#e8a87c" transform="rotate(-35 145 48)"/>
+          <ellipse cx="145" cy="48" rx="27" ry="10" fill="#dba068" transform="rotate(25 145 48)"/>
+          <circle cx="145" cy="48" r="9" fill="#c07040"/>
+          <path d="M55 85 Q88 62 125 68 Q158 76 178 48" stroke="#8b6040" stroke-width="1.8" fill="none"/>
+          <ellipse cx="108" cy="70" rx="10" ry="4" fill="#7a9060" transform="rotate(-18 108 70)"/>
+        </g>
+      </svg>
+
+      <p class="ptit rz">Confirma tu <span style="color:var(--te)">Asistencia</span></p>
+      <p class="psub rz">Te esperamos con todo nuestro amor</p>
+      <p class="cb rz">Por favor, confirma tu asistencia<br>llamando o escribiendo a:</p>
+      <div class="ph rz">
+        <a href="tel:619139496">📞 619 139 496</a>
+        <p class="cor">o</p>
+        <a href="tel:622572205">📞 622 572 205</a>
+      </div>
+      <a class="gf rz" href="https://docs.google.com/forms/d/e/1FAIpQLSd80Qb0BAmVOowKeFXo0D0oDIWm3SYpGoXGzNJLiB3Xo_Bi-A/viewform" target="_blank">✉️ Confirma tu asistencia aquí</a>
+      <p class="mo rz">I &amp; P</p>
+      <p class="cd rz">26 · 09 · 2026</p>
+      <p class="gr rz">Gracias por acompañarnos</p>
+    </div>
+  </div>
+
+</div><!-- /book -->
+
+<script>
+var cur = 0;
+var total = 4;
+var playing = false;
+var opened = false;
+var tx0 = 0;
+
+function abrirSobre() {
+  if (opened) return;
+  opened = true;
+  // Animar solapa
+  document.getElementById('flap').style.transform = 'rotateX(-175deg)';
+  // Tarjetita asoma
+  var cp = document.getElementById('cp');
+  setTimeout(function() {
+    cp.style.transition = 'opacity .5s, transform .75s cubic-bezier(.2,.85,.4,1)';
+    cp.style.opacity = '1';
+    cp.style.transform = 'translateX(-50%) translateY(-100px)';
+  }, 300);
+  // Mostrar invitación
+  setTimeout(function() {
+    document.getElementById('scene').classList.add('gone');
+    document.getElementById('book').classList.add('show');
+    document.getElementById('dots').classList.add('show');
+    document.getElementById('nb').classList.add('show');
+    document.getElementById('mbtn').classList.add('show');
+    document.getElementById('pt').classList.add('show');
+    iniciarPetalos();
+    try { document.getElementById('au').volume = 0.3; document.getElementById('au').play(); playing = true; syncIcon(); } catch(e) {}
+  }, 1800);
+}
+
+function ir(idx) {
+  if (idx === cur) return;
+  var pgs = document.querySelectorAll('.pg');
+  pgs[cur].classList.remove('cur');
+  pgs[cur].classList.add('prev');
+  setTimeout(function(old) { return function() { pgs[old].classList.remove('prev'); }; }(cur), 520);
+  cur = idx;
+  pgs[cur].style.transform = 'translateX(100%)';
+  pgs[cur].classList.add('cur');
+  setTimeout(function() { pgs[cur].style.transform = ''; }, 20);
+  var dots = document.querySelectorAll('.do');
+  for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('on', i === cur);
+  var nb = document.getElementById('nb');
+  nb.style.opacity = cur === total - 1 ? '0' : '1';
+  nb.style.pointerEvents = cur === total - 1 ? 'none' : 'auto';
+}
+
+function sig() { if (cur < total - 1) ir(cur + 1); }
+
+// Swipe
+document.addEventListener('touchstart', function(e) { tx0 = e.touches[0].clientX; }, false);
+document.addEventListener('touchend', function(e) {
+  var dx = e.changedTouches[0].clientX - tx0;
+  if (Math.abs(dx) > 45) { if (dx < 0) sig(); else ir(Math.max(0, cur - 1)); }
+}, false);
+
+// Teclado
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') sig();
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') ir(Math.max(0, cur - 1));
+});
+
+function toggleMusic() {
+  var au = document.getElementById('au');
+  if (playing) { au.pause(); playing = false; } else { au.play(); playing = true; }
+  syncIcon();
+}
+function syncIcon() {
+  document.getElementById('io').style.display = playing ? 'block' : 'none';
+  document.getElementById('im').style.display = playing ? 'none' : 'block';
+}
+
+function iniciarPetalos() {
+  var c = document.getElementById('pt');
+  var ctx = c.getContext('2d');
+  c.width = window.innerWidth; c.height = window.innerHeight;
+  window.addEventListener('resize', function() { c.width = window.innerWidth; c.height = window.innerHeight; });
+  var cols = ['#e8a87c','#dba068','#f0c090','#e8c0a0','#d4906a','#c9a84c'];
+  var ps = [];
+  for (var i = 0; i < 18; i++) ps.push(mkP());
+  function mkP() {
+    return {
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * -window.innerHeight,
+      w: Math.random() * 8 + 4, h: Math.random() * 5 + 2,
+      vy: Math.random() * .9 + .3, vx: (Math.random() - .5) * .4,
+      rot: Math.random() * 6.28, vr: (Math.random() - .5) * .025,
+      op: Math.random() * .38 + .1,
+      col: cols[Math.floor(Math.random() * cols.length)]
+    };
+  }
+  function loop() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    for (var i = 0; i < ps.length; i++) {
+      var p = ps[i];
+      p.y += p.vy; p.x += p.vx + Math.sin(p.y * .007) * .3; p.rot += p.vr;
+      if (p.y > c.height + 20) { ps[i] = mkP(); ps[i].y = -20; continue; }
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.globalAlpha = p.op; ctx.fillStyle = p.col;
+      ctx.beginPath(); ctx.ellipse(0, 0, p.w, p.h, 0, 0, 6.28); ctx.fill();
+      ctx.restore();
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
+</script>
+</body>
+</html>
