@@ -285,57 +285,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Lato',sans-serif;b
 .cd{font-family:'Lato',sans-serif;font-weight:300;letter-spacing:.32em;color:rgba(245,240,232,.35);font-size:.68rem;margin-top:4px;text-align:center}
 .gr{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:rgba(245,240,232,.45);margin-top:6px;text-align:center}
 
-/* ══ PANTALLA CONTRASEÑA ══ */
-#lockscreen{
-  position:fixed;inset:0;z-index:500;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
-  background:radial-gradient(ellipse at 30% 40%,#2a1508,#0d0503);
-  font-family:'Lato',sans-serif;
-}
-#lockscreen.gone{display:none}
 
-.lock-ico{font-size:2.8rem;animation:lockPulse 2s ease-in-out infinite}
-@keyframes lockPulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 8px rgba(201,168,76,.3))}
-  50%{transform:scale(1.08);filter:drop-shadow(0 0 20px rgba(201,168,76,.7))}}
-
-.lock-title{font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:clamp(1.6rem,5vw,2.2rem);color:var(--cr);letter-spacing:.05em;text-align:center}
-.lock-sub{font-family:'Lato',sans-serif;font-weight:300;font-size:.7rem;
-  letter-spacing:.3em;text-transform:uppercase;color:rgba(245,240,232,.4);text-align:center}
-
-.lock-input-wrap{position:relative;width:min(280px,80vw)}
-#lock-input{
-  width:100%;padding:12px 48px 12px 18px;
-  background:rgba(245,240,232,.07);
-  border:1px solid rgba(201,168,76,.3);border-radius:30px;
-  font-family:'Cinzel',serif;font-size:.9rem;letter-spacing:.15em;
-  color:var(--cr);text-align:center;outline:none;
-  transition:border-color .3s,box-shadow .3s;
-}
-#lock-input:focus{border-color:rgba(201,168,76,.7);
-  box-shadow:0 0 0 3px rgba(201,168,76,.12)}
-#lock-input::placeholder{color:rgba(245,240,232,.25);letter-spacing:.2em}
-
-#eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);
-  background:none;border:none;cursor:pointer;color:rgba(245,240,232,.4);
-  font-size:1rem;padding:2px}
-
-#lock-btn{
-  font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.12em;
-  color:#f5f0e8;background:linear-gradient(135deg,#9a3d12,var(--te),var(--tl));
-  border:none;border-radius:30px;padding:12px 36px;cursor:pointer;
-  box-shadow:0 6px 24px rgba(181,84,30,.5);
-  transition:transform .2s,box-shadow .2s;
-  animation:gfpulse 2.5s ease-in-out infinite;
-}
-#lock-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(181,84,30,.7)}
-
-.lock-error{font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.9rem;color:#e06040;opacity:0;transition:opacity .3s;text-align:center}
-.lock-error.show{opacity:1}
-
-.lock-hint{font-family:'Lato',sans-serif;font-weight:300;font-size:.62rem;
-  color:rgba(245,240,232,.25);letter-spacing:.2em;text-align:center;margin-top:4px}
 </style>
 </head>
 <body>
@@ -622,13 +572,13 @@ function checkPass(){
   var val = document.getElementById('lock-input').value;
   var err = document.getElementById('lock-error');
   if(val === PASS){
-    document.getElementById('lockscreen').classList.add('gone');
-    err.classList.remove('show');
+    document.getElementById('lockscreen').style.display = 'none';
+    err.style.opacity = '0';
   } else {
-    err.classList.add('show');
+    err.style.opacity = '1';
     document.getElementById('lock-input').value = '';
     document.getElementById('lock-input').focus();
-    setTimeout(function(){ err.classList.remove('show'); }, 2500);
+    setTimeout(function(){ err.style.opacity = '0'; }, 2500);
   }
 }
 
