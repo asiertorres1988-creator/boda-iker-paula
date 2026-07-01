@@ -628,6 +628,32 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Lato',sans-serif;b
 </div>
 
 <script>
+
+/* ── CONTRASEÑA ── */
+var PASS = "boda2026";
+var eyeVisible = false;
+
+function checkPass(){
+  var val = document.getElementById('lock-input').value;
+  var err = document.getElementById('lock-error');
+  if(val === PASS){
+    document.getElementById('lockscreen').classList.add('gone');
+    err.classList.remove('show');
+  } else {
+    err.classList.add('show');
+    document.getElementById('lock-input').value = '';
+    document.getElementById('lock-input').focus();
+    setTimeout(function(){ err.classList.remove('show'); }, 2500);
+  }
+}
+
+function toggleEye(){
+  var inp = document.getElementById('lock-input');
+  eyeVisible = !eyeVisible;
+  inp.type = eyeVisible ? 'text' : 'password';
+  document.getElementById('eye-btn').textContent = eyeVisible ? '🙈' : '👁';
+}
+
 var cur=0,total=4,playing=false,opened=false,tx0=0;
 
 /* Arrancar estrellas y pétalos inmediatamente */
